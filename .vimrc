@@ -1,5 +1,9 @@
 set nocompatible
 
+" Useful map mode (normal, visual, operator-pending) same as noremap but without select mode
+" Makes overwriting by typing work when selecting (shift+move in insert mode)
+command! -nargs=* -complete=mapping NXOnoremap nnoremap <args>|xnoremap <args>|onoremap <args>
+
 "-----------------------------------------------------------------------------
 " Plugins Used
 "-----------------------------------------------------------------------------
@@ -23,16 +27,31 @@ execute pathogen#infect()
 
 " vim-fugitive: git wrapper
 
+" Optionally- YouCompleteMe for completion
+
+" vim-easy-align:
+xmap <Enter> <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
 " Oblique + PseudoCL for improved in-buffer regex
 let g:oblique#clear_highlight=0
 let g:oblique#incsearch_highlight_all=1
+let g:oblique#very_magic=1
 hi clear ObliqueCurrentMatch
 
 " vim-multiple-cursors
 " It doesn't work with exclusive selection so temporarily set inclusive selection
-" todo
-
-" Optionally- YouCompleteMe for completion
+" Also interferes with our trick to move cursor coming out of insert mode so turn that off too
+function! Multiple_cursors_before()
+  set selection=inclusive
+  iunmap <esc>
+  inoremap <silent> <s-cr> <esc>
+endfunction
+function! Multiple_cursors_after()
+  set selection=exclusive
+  inoremap <silent> <esc> <esc>`^
+  inoremap <silent> <s-cr> <esc>`^
+endfunction
 
 " Unite
 "call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -42,7 +61,7 @@ call unite#custom#source('buffer,file,file/new,file_rec,file_rec/async', 'matche
 call unite#custom#source('buffer,file,file_rec,file_rec/async', 'sorters', 'sorter_rank')
 " call unite#custom#source('file_rec/async','sorters','sorter_rank', )
 " replacing unite with ctrl-p
-let g:unite_enable_start_insert=1
+" let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable=1
 let g:unite_prompt='» '
 let g:unite_split_rule = 'botright'
@@ -55,19 +74,21 @@ let g:unite_source_rec_async_command = ['gfind']
 function! s:unite_keybindings()
   inoremap <buffer> <silent> <esc> <esc>`^
   inoremap <buffer> <silent> <s-cr> <esc>`^
-  inoremap <buffer> <silent> <c-cr> <esc>`^
   noremap <buffer> <silent> <c-k> :wincmd k<cr>
   " map <buffer> <s-cr> <Plug>(unite_do_default_action)
   " imap <buffer> <s-cr> <Plug>(unite_do_default_action)
 endfunction
 autocmd FileType unite call s:unite_keybindings()
-nnoremap <silent> <c-p> :Unite -auto-resize file file_rec/async<cr>
+nnoremap <silent> <c-p> :Unite -auto-resize file file_rec/async -buffer-name=unitefiles -resume<cr>
 nnoremap <silent> <c-f> :Unite -auto-resize line<cr>
 
 " Language Specific
 " -----------------
 " Coffeescript syntax highlighting
 " Vaxe for haxe highlighting
+
+" Racket
+let g:paredit_mode=0
 
 "-----------------------------------------------------------------------------
 " GUI Options
@@ -87,7 +108,9 @@ cnoreabbrev fs Fontsize
 set shortmess+=I
 set hidden "hidden buffers
 set virtualedit=onemore,block
+behave mswin
 set selection=exclusive
+set whichwrap+=h,l,<,>,[,]
 set noswapfile
 set number
 set wildmode=longest,list,full
@@ -140,12 +163,15 @@ cnoreabbrev hc let g:solarized_contrast="high" \| colorscheme solarized
 "  let s:green       = "#7CAD07"
 
 " Less in-your-face invisible characters
-" TODO: Deal with high contrast mode
-let s:gui_base02 = "#073642"
+" TODO: Deal with high contrast mode and inverted mode
+let s:base03       = "#0f0f0f"
+let s:gui_base02   = "#073642"
 let s:cterm_base02 = "0"
+
 exe "hi! SpecialKey gui=none guibg=bg guifg=" .s:gui_base02 ." ctermfg=" .s:cterm_base02
 exe "hi! NonText    gui=none guibg=bg guifg=" .s:gui_base02 ." ctermfg=" .s:cterm_base02
 
+exe "hi! folded guibg=" .s:base03
 hi! search gui=none guibg=#102430
 
 "-----------------------------------------------------------------------------
@@ -156,33 +182,35 @@ let mapleader = "\\"
 set timeoutlen=300
 
 " Faster Ex mode access
-noremap ; :
+NXOnoremap ; :
 " As a result, provide new mappings for search by character
-noremap : ,
-noremap " ;
+NXOnoremap : ,
+NXOnoremap " ;
 " And as a result of that, provide mappings for using registers, which is also more convenient
-noremap ' "
+NXOnoremap ' "
 " We changed the ability to jump to mark line (') but we can use jump to mark exactly (`) instead or the following: (,)
-noremap , '
+NXOnoremap , '
 
 " Come out of insert mode assuming it was insert mode not add mode
-" Also map shift/ctrl+enter to esc, and add an undo point for inserting newlines
+" Also map shift/ctrl+enter to esc
 inoremap <silent> <esc> <esc>`^
 inoremap <silent> <s-cr> <esc>`^
-inoremap <silent> <c-cr> <esc>`^
-inoremap <cr> <c-g>u<cr>
 
-" Shift/ctrl+enter easier to press than escape
+" Shift+enter easier to press than escape
 noremap <s-cr> <esc>
-noremap <c-cr> <esc>
+
+" Add an undo point for inserting newlines
+inoremap <cr> <c-g>u<cr>
 
 " Swap b and q keys
 " Makes w/q move forward/back a word positionally related
 " Record macro / enter Ex mode ends up on b / B which is fine
-noremap b q
-noremap q b
-noremap Q B
-noremap B Q
+NXOnoremap b q
+NXOnoremap q b
+NXOnoremap Q B
+
+" Rather than go to Ex mode, make B play the macro in register b
+NXOnoremap B @b
 
 " Swap ctrl-e and ctrl-u, and swap the resultant ctrl-y and ctrl-u
 " Makes ctrl+e/d up/down a page keys positionally related
@@ -192,12 +220,12 @@ noremap <c-y> <c-e>
 noremap <c-u> <c-y>
 
 " Make arrow keys useful for scrolling document when you're not really editing
-noremap <up> <c-y>k
-noremap <down> <c-e>j
+NXOnoremap <up> <c-y>k
+NXOnoremap <down> <c-e>j
 
 " Map H and L to Home and End, lose top of screen / bottom of screen movements which we never use anyway
-noremap H g^
-noremap L g$
+NXOnoremap H g^
+NXOnoremap L g$
 
 "-----------------------------------------------------------------------------
 " Windows keys
@@ -210,13 +238,15 @@ noremap <c-v> "+gP
 cnoremap <c-v> <c-r>+
 inoremap <c-v> <c-g>u<c-o>"+gP
 
-" Undo
+" Undo and redo. We lose c-y for scrolling, but I never really used it
 noremap <c-z> u
 inoremap <c-z> <c-o>u
+noremap <c-y> <c-r>
+inoremap <c-y> <c-o><c-r>
 
 " Provide an alternative to visual block mode
-vnoremap v <c-v>
-noremap <leader>v <c-v>
+xnoremap v <c-v>
+NXOnoremap <leader>v <c-v>
 
 " Tabs
 noremap <c-tab> gt
@@ -245,10 +275,16 @@ nnoremap <leader>q :Bdelete<cr>
 nnoremap <leader>q! :Bdelete!<cr>
 
 " Make space center screen on cursor
-noremap <space> zz
+NXOnoremap <space> zz
+inoremap <c-space> <c-o>zz
 
 " Repair file with mixed up newline encodings
-cnoreabbrev fffix silent %s/\v^\n// | %s/\v([^\r])\n/\1/ | %s/\r//
+function RepairFileNewlines()
+  %s/\v^\n//
+  %s/\v([^\r])\n/\1/
+  %s/\v\r//
+endfunction
+cnoreabbrev fffix call RepairFileNewlines()<cr>
 
 " Change current dir to current file
 cnoreabbrev cdc cd %:p:h
@@ -257,13 +293,28 @@ cnoreabbrev cdc cd %:p:h
 nnoremap <silent> <leader>bc :let bufferclip=bufnr('%')<cr>
 nnoremap <silent> <leader>bv :execute "b ".bufferclip<cr>
 
+" Execute line under cursor as Ex command
+nnoremap <leader>e :execute getline(".")<cr>
+
 " Session shortcuts
 set ssop-=options
-cnoreabbrev ss mks! session.vim
-cnoreabbrev sload so session.vim
+function! SaveSession()
+  mksession! session.vim
+  call writefile([getcwd()], $HOME."/.vimsession")
+  echo "Session saved."
+endfunction
+function! LoadSessionRecent()
+  for path in readfile($HOME."/.vimsession", '', 1)
+    execute 'cd' fnameescape(path)
+  endfor
+  source session.vim
+endfunction
+cnoreabbrev ss call SaveSession()<cr>
+cnoreabbrev sl source session.vim<cr>
+cnoreabbrev slr call LoadSessionRecent()<cr>
 
 " Diff
-noremap <leader>d :call ToggleDiff()<cr>
+NXOnoremap <leader>d :call ToggleDiff()<cr>
 function! ToggleDiff()
   if &diff
     diffoff
@@ -271,13 +322,38 @@ function! ToggleDiff()
     diffthis
   endif
 endfunction
+nnoremap <leader>g :diffget<cr>
+nnoremap <leader>p :diffput<cr>
+xnoremap <leader>g :'<,'>diffget<cr>
+xnoremap <leader>p :'<,'>diffput<cr>
+NXOnoremap <leader>u :diffupdate<cr>
 
 "-----------------------------------------------------------------------------
 " Misc Config
 "-----------------------------------------------------------------------------
 
+" Status Line
+set noruler
+set laststatus=2
+let s:red = "#dc322f"
+exe "hi User1 ctermfg=red gui=reverse guifg=" .s:red ." guibg=" .s:gui_base02
+set statusline=%1(%1*%M%*%)%<%f\ %h%r%=%-14.(%l,%c%V%)\ %P
+
+" Title Bar
+set title
+" Show pwd and filename in title bar, but show the end of the path first, and don't bother showing $HOME
+function! TitleString()
+  if getcwd() ==# $HOME
+    return expand('%:t')
+  else
+    return split(getcwd(),'\\\|\/')[-1]." - ".expand('%:t')." - ".getcwd()
+endfunction
+set titlestring=%{TitleString()}%<
+
 " Indentation
+filetype on
 filetype indent on
+filetype plugin on
 set autoindent
 
 " Performance thingies
@@ -289,7 +365,7 @@ inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
 " Make yank to end of line consistent with shift-C or shift-D
-noremap Y y$
+NXOnoremap Y y$
 
 " When starting linewise visual block mode, move cursor to start of line
 nnoremap V g^V
@@ -304,7 +380,6 @@ set autoread
 set diffopt=filler,vertical
 
 " Text wrap
-" set nowrap
 set wrap
 set breakindent
 set breakindentopt=min:5,shift:-1
@@ -312,10 +387,16 @@ set showbreak=~
 set linebreak
 set breakat=\ \	;:,/?\\([{
 set cpoptions+=n
-noremap j gj
-noremap k gk
+set textwidth=0
+" Turn explicit wrap off on file open just in case some filetype plugin has other ideas
+autocmd BufRead * setlocal textwidth=0
+NXOnoremap j gj
+NXOnoremap k gk
 inoremap <down> <c-o>gj
 inoremap <up> <c-o>gk
+
+" Dealing with super long lines in word wrap
+set display+=lastline
 
 " Visualise whitespace
 set list
@@ -324,13 +405,13 @@ set listchars=tab:>.,extends:>,nbsp:-,trail:. "This is also set in tab setup bel
 " Tab setup
 set smarttab
 function! UseTabs()
-  bufdo set tabstop=3
-  bufdo set shiftwidth=3
+  bufdo set tabstop=2
+  bufdo set shiftwidth=2
   bufdo set noexpandtab
   set listchars=tab:\ \ ,extends:>,nbsp:-,trail:.
 endfunction
 function! UseSpaces()
-  bufdo set tabstop=4
+  bufdo set tabstop=2
   bufdo set shiftwidth=2
   bufdo set expandtab
   set listchars=tab:>.,extends:>,nbsp:-,trail:.
@@ -348,16 +429,21 @@ noremap <silent> <c-h> :wincmd h<cr>
 noremap <silent> <c-j> :wincmd j<cr>
 noremap <silent> <c-k> :wincmd k<cr>
 noremap <silent> <c-l> :wincmd l<cr>
+inoremap <silent> <c-h> <c-o>:wincmd h<cr>
+inoremap <silent> <c-j> <c-o>:wincmd j<cr>
+inoremap <silent> <c-k> <c-o>:wincmd k<cr>
+inoremap <silent> <c-l> <c-o>:wincmd l<cr>
 
 " Don't deselect visual block on changing indent
-vnoremap < <gv
-vnoremap > >gv
+xnoremap < <gv
+xnoremap > >gv
 
 " Search options
 set ignorecase
 set smartcase
 set incsearch
 set hlsearch
+" set nomagic "We can't set nomagic as it interferes with the Oblique plugin
 
 " Substitute all matches on a line by default
 set gdefault
