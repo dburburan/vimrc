@@ -749,6 +749,8 @@ filetype on
 filetype indent on
 filetype plugin on
 set autoindent
+set cinkeys-=0#
+set indentkeys-=0#
 
 " Performance thingies
 set lazyredraw
