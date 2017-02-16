@@ -788,7 +788,7 @@ set diffopt=filler,vertical
 " Text wrap
 set wrap
 set breakindent
-set breakindentopt=min:5,shift:-1
+set breakindentopt=min:10,shift:0
 set showbreak=~
 set linebreak
 set breakat=\ \	;:,/?\\([{
