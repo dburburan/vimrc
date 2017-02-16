@@ -479,6 +479,31 @@ onoremap iN gN
 xnoremap in <esc>gn
 xnoremap iN <esc>gN
 
+" Change w and q to jump over punctuation, and be more customisable
+function! GotoPattern_4dFuJoHLIE(dir, vmode) range
+  let l:count = v:count1
+  if a:vmode ==# 'v'
+    normal! gv
+  endif
+  let g:_saved_search_reg = @/
+  let l:flags = "W"
+  if a:dir == "b"
+    let l:flags .= "b"
+  endif
+  for i in range(l:count)
+    call search('\v' . g:wordjump_regex, l:flags)
+  endfor
+  let @/ = g:_saved_search_reg
+endfunction
+nnoremap <silent> w :<c-u>call GotoPattern_4dFuJoHLIE('f', 'n')<CR>
+xnoremap <silent> w :<c-u>call GotoPattern_4dFuJoHLIE('f', 'v')<CR>
+nnoremap <silent> q :<c-u>call GotoPattern_4dFuJoHLIE('b', 'n')<CR>
+xnoremap <silent> q :<c-u>call GotoPattern_4dFuJoHLIE('b', 'v')<CR>
+command! -nargs=1 Wj let g:wordjump_regex='<args>'
+cnoreabbrev wj Wj
+cnoreabbrev wjd Wj <\w
+let g:wordjump_regex='<\w'
+
 "-----------------------------------------------------------------------------
 " Windows keys
 "-----------------------------------------------------------------------------
