@@ -352,6 +352,9 @@ NXOnoremap <down> <c-e>j
 " Map H and L to Home and End, lose top of screen / bottom of screen movements which we never use anyway
 NXOnoremap H g^
 NXOnoremap L g$
+" If we're in the middle of a motion use the whole line
+onoremap H ^
+onoremap L $
 
 "-----------------------------------------------------------------------------
 " Windows keys
