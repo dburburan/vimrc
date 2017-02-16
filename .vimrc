@@ -544,9 +544,8 @@ inoremap <c-z> <c-o>u
 noremap <c-y> <c-r>
 inoremap <c-y> <c-o><c-r>
 
-" Provide an alternative to visual block mode
+" Provide alternative way to access visual block mode
 xnoremap v <c-v>
-NXOnoremap <leader>v <c-v>
 
 " Tabs
 noremap <c-tab> gt
