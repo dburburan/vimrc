@@ -703,6 +703,22 @@ NXOnoremap <leader>r :diffupdate<cr>
 "Using plugin vim-diffa to process git diff output
 let g:diffa#unified#arguments = ['diff', '--no-index', '--patience', '--no-color', '--no-ext-diff', '--unified=0']
 
+" Redirect Ex command output to buffer
+function! Ex2Buf(cmd)
+  redir => message
+  silent execute a:cmd
+  redir END
+  if empty(message)
+    echoerr "no output"
+  else
+    tabnew
+    setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
+    silent put=message
+  endif
+endfunction
+command! -nargs=+ -complete=command Ex2Buf call Ex2Buf(<q-args>)
+cnoreabbrev > Ex2Buf
+
 "-----------------------------------------------------------------------------
 " Misc Config
 "-----------------------------------------------------------------------------
