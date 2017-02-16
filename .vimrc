@@ -100,16 +100,21 @@ endfunction
 " Unite
 "call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#source('buffer,file,file/new,file_rec,file_rec/async', 'matchers', 'matcher_fuzzy')
+"call unite#custom#source('buffer,file,file/new,file_rec,file_rec/async', 'matchers', 'matcher_fuzzy')
+"call unite#custom#source('buffer,file,file/new,file_rec,file_rec/async', 'matchers', 'matcher_context')
+call unite#custom#source('buffer,file,file/new,file_rec', 'matchers', 'matcher_context')
 "call unite#custom#source('buffer,file,file_rec,file_rec/async,line', 'sorters', 'sorter_selecta')
-call unite#custom#source('buffer,file,file_rec,file_rec/async', 'sorters', 'sorter_rank')
+call unite#custom#source('buffer,file,file_rec', 'sorters', 'sorter_rank')
 " call unite#custom#source('file_rec/async','sorters','sorter_rank', )
 " replacing unite with ctrl-p
 " let g:unite_enable_start_insert=1
+call unite#filters#converter_default#use(["converter_relative_word"])
 let g:unite_source_history_yank_enable=1
 let g:unite_prompt='» '
 let g:unite_split_rule = 'botright'
-let g:unite_source_rec_async_command = ['gfind']
+"let g:unite_split_rule = 'dynamicbottom'
+"let g:unite_split_rule = 'belowright'
+" let g:unite_source_rec_async_command = ['gfind']
 "if executable('ag')
 "  let g:unite_source_grep_command='ag'
 "  let g:unite_source_grep_default_opts='--nocolor --nogroup -S -C4'
@@ -117,14 +122,33 @@ let g:unite_source_rec_async_command = ['gfind']
 "endif
 function! s:unite_keybindings()
   inoremap <buffer> <silent> <esc> <esc>`^
-  inoremap <buffer> <silent> <s-cr> <esc>`^
-  noremap <buffer> <silent> <c-k> :wincmd k<cr>
-  " map <buffer> <s-cr> <Plug>(unite_do_default_action)
-  " imap <buffer> <s-cr> <Plug>(unite_do_default_action)
+  inoremap <buffer> <silent> <c-cr> <esc>`^
+  imap <buffer> <c-j> <Plug>(unite_select_next_line)
+  imap <buffer> <c-k> <Plug>(unite_select_previous_line)
+  imap <buffer> <c-d> <Plug>(unite_select_next_page)
+  imap <buffer> <c-e> <Plug>(unite_select_previous_page)
+  noremap <buffer> <c-j> j
+  noremap <buffer> <c-k> k
+  imap <buffer> <esc> <c-u><bs>
+  map <buffer> <esc> <Plug>(unite_all_exit)
+  imap <buffer> <c-cr> <Plug>(unite_do_default_action)
 endfunction
 autocmd FileType unite call s:unite_keybindings()
-nnoremap <silent> <c-p> :Unite -auto-resize file file_rec/async -buffer-name=unitefiles -resume<cr>
-nnoremap <silent> <c-f> :Unite -auto-resize line<cr>
+
+" The async version is better but requires vimproc:
+" nnoremap <silent> <c-p> :Unite -auto-resize file file_rec/async -buffer-name=unitefiles -resume -start-insert -no-restore -input=<cr>
+
+nnoremap <silent> <c-p>     :Unite                   file file_rec file/new                                 -auto-resize -start-insert -buffer-name=unite_files      -resume -no-restore -input=<cr>
+nnoremap <silent> <a-p>h    :Unite                   file file_rec:/HaxeToolkit/haxe/ -path=C:/HaxeToolkit/ -auto-resize -start-insert -buffer-name=unite_haxe_files -resume -no-restore -input=<cr>
+nnoremap <silent> <a-p>     :UniteWithInputDirectory file file_rec                                          -auto-resize -start-insert<cr>
+nnoremap <silent> <c-f>     :Unite                   line                                                   -auto-resize -start-insert<cr>
+nnoremap <silent> <c-space> :Unite                   tab buffer                                             -auto-resize -start-insert<cr>
+
+" let g:unite_alt_sources="file:/HaxeToolkit/haxe"
+" " file_rec:/HaxeToolkit/haxe"
+" function StartAlternateUnite()
+" endfunction
+" nnoremap <silent> <a-p> :call StartAlternateUnite()<cr>
 
 " Language Specific
 " -----------------
