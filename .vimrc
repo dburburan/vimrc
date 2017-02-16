@@ -381,6 +381,12 @@ cnoreabbrev coldc call ColorschemeDarkContrast()
 cnoreabbrev colln call ColorschemeLightNormal()
 cnoreabbrev collc call ColorschemeLightContrast()
 
+" Debugging
+function! SyntaxItem()
+  return synIDattr(synID(line("."),col("."),1),"name")
+endfunction
+command! SyntaxDebug set statusline+=\ %{SyntaxItem()}
+
 "-----------------------------------------------------------------------------
 " Modifying Default Vim Behaviour
 "-----------------------------------------------------------------------------
