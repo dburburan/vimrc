@@ -97,6 +97,64 @@ function! Multiple_cursors_after()
   unmap <c-r>
 endfunction
 
+" Easymotion
+let g:EasyMotion_do_mapping=1
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_smartsign = 1
+let g:EasyMotion_use_smartsign_us = 1
+" let g:EasyMotion_use_upper = 1
+let g:EasyMotion_keys = 'jfhgkdielsmvurnbyt,c.x/zwoa;JFHGKDIELSMVURNBYT<C>X?ZWOA:'
+let g:EasyMotion_startofline = 0
+NXOmap <leader>f  <Plug>(easymotion-f)
+NXOmap <leader>F  <Plug>(easymotion-F)
+NXOmap <leader>t  <Plug>(easymotion-t)
+NXOmap <leader>T  <Plug>(easymotion-T)
+NXOmap <leader>w  <Plug>(easymotion-w)
+NXOmap <leader>W  <Plug>(easymotion-W)
+NXOmap <leader>q  <Plug>(easymotion-b)
+NXOmap <leader>Q  <Plug>(easymotion-B)
+NXOmap <leader>e  <Plug>(easymotion-e)
+NXOmap <leader>E  <Plug>(easymotion-E)
+NXOmap <leader>ge <Plug>(easymotion-ge)
+NXOmap <leader>gE <Plug>(easymotion-gE)
+NXOmap <leader>j  <Plug>(easymotion-j)
+NXOmap <leader>k  <Plug>(easymotion-k)
+NXOmap <leader>n  <Plug>(easymotion-n)
+NXOmap <leader>N  <Plug>(easymotion-N)
+NXOmap f <Plug>(easymotion-bd-f)
+" NXOmap f <Plug>(easymotion-bd-fl)
+" NXOmap F <Plug>(easymotion-bd-fl)
+" NXOmap t <Plug>(easymotion-tl)
+NXOmap F <Plug>(easymotion-bd-jk)
+NXOmap T <Plug>(easymotion-bd-Tl)
+" NXOmap s <Plug>(easymotion-s2)
+" nmap S <Plug>(easymotion-overwin-f2)
+NXOmap " <Plug>(easymotion-next)
+NXOmap : <Plug>(easymotion-prev)
+
+" Jump to anywhere
+" NXOmap F <Plug>(easymotion-bd-jk)
+NXOmap t <Plug>(easymotion-jumptoanywhere)
+let g:EasyMotion_re_anywhere = '\v' .
+  \ '([[:punct:]])(\1.)@<!' . '|' .
+  \ '(<.|^$)' . '|' .
+  \ '(\l\zs\u)'
+  " \ '(.>|^$)' . '|' .
+
+" Experimenting with this
+" NXOmap t  <Plug>(easymotion-jumptoanywhere)
+
+" vim-sneak
+" not currently using this, easymotion instead
+" NXOmap s <Plug>Sneak_s
+" NXOmap S <Plug>Sneak_S
+" NXOmap f <Plug>Sneak_f
+" NXOmap F <Plug>Sneak_F
+" NXOmap t <Plug>Sneak_t
+" NXOmap T <Plug>Sneak_T
+" NXOmap " <Plug>SneakNext
+" NXOmap : <Plug>SneakPrevious
+
 " Unite
 "call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "call unite#filters#sorter_default#use(['sorter_rank'])
