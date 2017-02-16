@@ -41,8 +41,8 @@ nnoremap <leader><leader>q! :Bdelete!<cr>
 " Optionally- YouCompleteMe for completion
 
 " vim-easy-align:
-xmap <Enter> <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+xmap <Enter> <Plug>(LiveEasyAlign)
+nmap ga <Plug>(LiveEasyAlign)
 
 " Oblique + PseudoCL for improved in-buffer regex
 let g:oblique#clear_highlight=0
