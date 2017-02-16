@@ -579,6 +579,10 @@ noremap <silent> <c-w>q :call <sid>CloseWindow()<cr>
 nnoremap <expr> <c-h> ":<c-u>tabmove -" .v:count1 ."<cr>"
 nnoremap <expr> <c-l> ":<c-u>tabmove +" .v:count1 ."<cr>"
 
+" Plugin: taboo.vim
+let g:taboo_tab_format=" %m%f%U "
+let g:taboo_renamed_tab_format=" %m[%l]%U "
+cnoreabbrev t TabooRename
 
 "-----------------------------------------------------------------------------
 " Convenience Shortcuts
@@ -615,10 +619,37 @@ nnoremap <silent> <leader>bv :execute "b ".g:bufferclip<cr>
 " Execute line under cursor as Ex command
 nnoremap <leader><leader>x :execute getline(".")<cr>
 
+function! SerializeString(str)
+  let l:str = substitute(a:str,'\\','\\\\','g')
+  let l:str = substitute(l:str,'"','\\"','g')
+  let l:str = substitute(l:str,'\n','\\n','g')
+  let l:str = substitute(l:str,'\t','\\t','g')
+  return '"' .l:str .'"'
+endfunction
+
 " Session shortcuts
-set ssop-=options
+" set ssop+=blank
+" set ssop-=buffers
+" set ssop-=curdir
+" set ssop-=globals
+" set ssop-=options
+" set ssop+=sesdir
+" set ssop+=slash
+" set ssop+=tabpages
+" set ssop+=unix
+" set ssop+=winsize
+set ssop=blank,sesdir,slash,tabpages,unix,winsize
 function! SaveSession()
   mksession! session.vim
+
+  " Plugin: taboo.vim
+  call writefile([
+      \'let SessionLoad = 1',
+      \'let g:Taboo_tabs = ' .SerializeString(g:Taboo_tabs),
+      \'doautoall SessionLoadPost',
+      \'unlet SessionLoad'
+    \], "session.vim", "a")
+
   call writefile([getcwd()], $HOME."/.vimsession")
   echo "Session saved."
 endfunction
@@ -628,9 +659,9 @@ function! LoadSessionRecent()
   endfor
   source session.vim
 endfunction
-cnoreabbrev ss call SaveSession()<cr>
-cnoreabbrev sl source session.vim<cr>
-cnoreabbrev slr call LoadSessionRecent()<cr>
+cnoreabbrev ss call SaveSession()
+cnoreabbrev sl source session.vim
+cnoreabbrev slr call LoadSessionRecent()
 
 " Diff
 NXOnoremap <leader>d :call ToggleDiff()<cr>
