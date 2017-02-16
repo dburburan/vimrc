@@ -1,5 +1,14 @@
 set nocompatible
 
+"-----------------------------------------------------------------------------
+" Encodings
+"-----------------------------------------------------------------------------
+
+set encoding=utf-8
+set fileencoding=utf-8
+set fileformats=unix,dos
+setglobal nobomb
+
 " Useful map mode (normal, visual, operator-pending) same as noremap but without select mode
 " Makes overwriting by typing work when selecting (shift+move in insert mode)
 command! -nargs=* -complete=mapping NXOnoremap nnoremap <args>|xnoremap <args>|onoremap <args>
@@ -457,9 +466,4 @@ set hlsearch
 " Substitute all matches on a line by default
 set gdefault
 
-" Encodings
-set fileformats=unix,dos
-setglobal nobomb
-set encoding=utf-8
-set fileencoding=utf-8
 
