@@ -595,11 +595,7 @@ inoremap <leader><tab>o <c-k>LZ
 " Saving
 cnoreabbrev w up
 noremap <silent> <c-s> :up<cr>
-inoremap <silent> <c-s> <c-o>:up<cr>
-
-" Delete buffers without closing window
-nnoremap <leader>q :Bdelete<cr>
-nnoremap <leader>q! :Bdelete!<cr>
+inoremap <silent> <c-s> <esc>`^:up<cr>
 
 " Make space center screen on cursor
 NXOnoremap <space> zz
