@@ -598,12 +598,12 @@ NXOnoremap <space> zz
 inoremap <c-space> <c-o>zz
 
 " Repair file with mixed up newline encodings
-function RepairFileNewlines()
+function! RepairFileNewlines()
   %s/\v^\n//
   %s/\v([^\r])\n/\1/
   %s/\v\r//
 endfunction
-cnoreabbrev fffix call RepairFileNewlines()<cr>
+cnoreabbrev fffix call RepairFileNewlines()
 
 " Change current dir to current file
 cnoreabbrev cdc cd %:p:h
