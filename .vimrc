@@ -601,6 +601,26 @@ inoremap <silent> <c-s> <esc>`^:up<cr>
 NXOnoremap <space> zz
 inoremap <c-space> <c-o>zz
 
+" Select pasted text
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" Moving blocks of text around, requires vim-unimpaired
+" nmap <c-j> [<space>
+" nmap <c-k> ]<space>
+" vmap <c-j> ]egv=gv
+" vmap <c-k> [egv=gv
+
+" Turns out these ones clash with <c-i>
+" nnoremap <s-tab> mm<<`m
+" nnoremap <tab> mm>>`m
+" vnoremap <s-tab> <gv
+" vnoremap <tab> >gv
+
+" nnoremap <c-j> :m .+1<cr>==
+" nnoremap <c-k> :m .-2<cr>==
+" inoremap <c-j> <esc>:m .+1<cr>==gi
+" inoremap <c-k> <esc>:m .-2<cr>==gi
+
 " Repair file with mixed up newline encodings
 function! RepairFileNewlines()
   %s/\v^\n//
