@@ -221,13 +221,32 @@ let g:paredit_mode=0
 "-----------------------------------------------------------------------------
 " GUI Options
 "-----------------------------------------------------------------------------
+" No scrollbars
+set guioptions-=l
+set guioptions-=L
+set guioptions-=r
+set guioptions-=R
+set guioptions-=h
+
+set guioptions-=e "No GUI tab pages
 set guioptions-=T "No toolbar
 set guioptions-=m "No menu
-set guifont=Courier_New:h10:cANSI
+
+if has("gui_macvim")
+  set guifont=Inconsolata:h12
+  command! -nargs=1 Fontsize set guifont=Inconsolata:h<args>
+else
+  set guifont=Inconsolata:h12:cANSI
+  command! -nargs=1 Fontsize set guifont=Inconsolata:h<args>:cANSI
+endif
 
 " Allow quickly setting font size with command
-command! -nargs=1 Fontsize set guifont=Courier_New:h<args>:cANSI
 cnoreabbrev fs Fontsize
+
+if has("gui_running")
+  set lines=59
+  set columns=135
+endif
 
 "-----------------------------------------------------------------------------
 " Options we always want
