@@ -266,11 +266,7 @@ set number
 " Syntax Highlighting
 "-----------------------------------------------------------------------------
 
-syntax on
-set background=dark
-colorscheme solarized
-cnoreabbrev nc let g:solarized_contrast="normal" \| colorscheme solarized
-cnoreabbrev hc let g:solarized_contrast="high" \| colorscheme solarized
+let g:solarized_italic=0
 
 " TODO: Really high contrast mode
 "1.5X Contrast
@@ -307,17 +303,76 @@ cnoreabbrev hc let g:solarized_contrast="high" \| colorscheme solarized
 "  let s:cyan        = "#2EB1A7"
 "  let s:green       = "#7CAD07"
 
-" Less in-your-face invisible characters
-" TODO: Deal with high contrast mode and inverted mode
-let s:base03       = "#0f0f0f"
 let s:gui_base02   = "#073642"
-let s:cterm_base02 = "0"
 
-exe "hi! SpecialKey gui=none guibg=bg guifg=" .s:gui_base02 ." ctermfg=" .s:cterm_base02
-exe "hi! NonText    gui=none guibg=bg guifg=" .s:gui_base02 ." ctermfg=" .s:cterm_base02
+" TODO: Deal with high contrast mode and inverted mode
+function! ColorschemeDarkNormal()
+  set background=dark
+  let g:solarized_contrast="normal"
+  colorscheme solarized
 
-exe "hi! folded guibg=" .s:base03
-hi! search gui=none guibg=#102430
+  let s:red = "#DC322F"
+  call PostColorschemeTweak()
+
+  let s:base03       = "#0f0f0f"
+  let s:gui_base02   = "#073642"
+  let s:cterm_base02 = "0"
+
+  " Less in-your-face invisible characters
+  exe "hi! SpecialKey gui=none guibg=bg guifg=" .s:gui_base02 ." ctermfg=" .s:cterm_base02
+  exe "hi! NonText    gui=none guibg=bg guifg=" .s:gui_base02 ." ctermfg=" .s:cterm_base02
+
+  exe "hi! folded guibg=" .s:base03
+  hi! search gui=none guibg=#102430
+endfunction
+
+function! ColorschemeLightNormal()
+  set background=light
+  let g:solarized_contrast="normal"
+  colorscheme solarized
+
+  let s:red = "#DC322F"
+  call PostColorschemeTweak()
+endfunction
+
+function! ColorschemeDarkContrast()
+  set background=dark
+  let g:solarized_contrast="high"
+  colorscheme solarized
+
+  let s:red = "#FF3936"
+  call PostColorschemeTweak()
+endfunction
+
+function! ColorschemeLightContrast()
+  set background=light
+  let g:solarized_contrast="high"
+  colorscheme solarized
+
+  let s:red = "#FF3936"
+  call PostColorschemeTweak()
+endfunction
+
+function! PostColorschemeTweak()
+  " Distinguish matched parens from cursor better
+  hi! MatchParen gui=bold,underline guibg=bg
+
+  " Set User1 colour for use in status line
+  exe "hi User1 ctermfg=red gui=reverse guifg=" .s:red ." guibg=" .s:gui_base02
+
+  " Language specific
+  exe "hi schemeDelimiter ctermfg=12 guifg=" .s:red ." gui=bold"
+endfunction
+
+syntax on
+call ColorschemeDarkNormal()
+
+cnoreabbrev dn call ColorschemeDarkNormal()
+cnoreabbrev dc call ColorschemeDarkContrast()
+cnoreabbrev coldn call ColorschemeDarkNormal()
+cnoreabbrev coldc call ColorschemeDarkContrast()
+cnoreabbrev colln call ColorschemeLightNormal()
+cnoreabbrev collc call ColorschemeLightContrast()
 
 "-----------------------------------------------------------------------------
 " Modifying Default Vim Keys
