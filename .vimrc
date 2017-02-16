@@ -548,16 +548,32 @@ inoremap <c-y> <c-o><c-r>
 xnoremap v <c-v>
 
 " Tabs
+"-----------------------------------------------------------------------------
+" Tab Pages
+"-----------------------------------------------------------------------------
+
 noremap <c-tab> gt
 noremap <c-s-tab> gT
 inoremap <c-tab> <c-o>gt
 inoremap <c-s-tab> <c-o>gT
+" noremap <silent> <c-t> :tabedit | tabmove -1<cr>
 noremap <silent> <c-t> :tabedit<cr>
 
-"-----------------------------------------------------------------------------
-" Folding
-"-----------------------------------------------------------------------------
+" If this is the last window in the tab, then close and make the tab to its left the current
+function! <sid>CloseWindow()
+  if winnr('$') ==# 1
+    tabmove -1
+    wincmd q
+  else
+    wincmd q
+  endif
+endfunction
+noremap <silent> <c-w><c-q> :call <sid>CloseWindow()<cr>
+noremap <silent> <c-w>q :call <sid>CloseWindow()<cr>
 
+" Moving
+nnoremap <expr> <c-h> ":<c-u>tabmove -" .v:count1 ."<cr>"
+nnoremap <expr> <c-l> ":<c-u>tabmove +" .v:count1 ."<cr>"
 
 
 "-----------------------------------------------------------------------------
@@ -701,7 +717,7 @@ set display+=lastline
 set list
 set listchars=tab:>.,extends:>,nbsp:-,trail:. "This is also set in tab setup below
 
-" Tab setup
+" Tab/indent setup
 set smarttab
 function! UseTabs()
   bufdo set tabstop=2
@@ -724,14 +740,14 @@ noremap <leftdrag> <leftmouse>
 noremap! <leftdrag> <leftmouse>
 
 " Change splits by pressing ctrl+hjkl
-noremap <silent> <c-h> :wincmd h<cr>
-noremap <silent> <c-j> :wincmd j<cr>
-noremap <silent> <c-k> :wincmd k<cr>
-noremap <silent> <c-l> :wincmd l<cr>
-inoremap <silent> <c-h> <c-o>:wincmd h<cr>
-inoremap <silent> <c-j> <c-o>:wincmd j<cr>
-inoremap <silent> <c-k> <c-o>:wincmd k<cr>
-inoremap <silent> <c-l> <c-o>:wincmd l<cr>
+"noremap <silent> <c-h> :wincmd h<cr>
+"noremap <silent> <c-j> :wincmd j<cr>
+"noremap <silent> <c-k> :wincmd k<cr>
+"noremap <silent> <c-l> :wincmd l<cr>
+"inoremap <silent> <c-h> <c-o>:wincmd h<cr>
+"inoremap <silent> <c-j> <c-o>:wincmd j<cr>
+"inoremap <silent> <c-k> <c-o>:wincmd k<cr>
+"inoremap <silent> <c-l> <c-o>:wincmd l<cr>
 
 " Don't deselect visual block on changing indent
 xnoremap < <gv
