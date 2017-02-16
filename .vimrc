@@ -27,6 +27,8 @@ execute pathogen#infect()
 " No longer used - see Unite instead
 
 " BBye for buffer deletion without wrecking splits
+nnoremap <leader><leader>q :Bdelete<cr>
+nnoremap <leader><leader>q! :Bdelete!<cr>
 
 " Indent object, for commands like vii, etc
 
