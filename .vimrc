@@ -723,6 +723,9 @@ cnoreabbrev > Ex2Buf
 " Misc Config
 "-----------------------------------------------------------------------------
 
+" When in visual mode don't include the character that the cursor is on
+set selection=exclusive
+
 " Status Line
 set noruler
 set laststatus=2
