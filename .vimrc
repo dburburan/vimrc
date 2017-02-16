@@ -774,7 +774,7 @@ onoremap w :execute 'normal! '.v:count1.'w'<CR>
 onoremap W :execute 'normal! '.v:count1.'W'<CR>
 
 " When starting linewise visual block mode, move cursor to start of line
-nnoremap V g^V
+" nnoremap V g^V
 
 " More flexible insert mode
 set backspace=indent,eol,start
