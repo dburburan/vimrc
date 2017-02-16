@@ -35,10 +35,34 @@ nnoremap <leader><leader>q! :Bdelete!<cr>
 " vim-repeat: Repeat plugin commands with '.'
 
 " vim-surround: add parentheses, quotes, etc, around selections
+" These mappings lose the default substitute command, but it's so similar to c for change
+let g:surround_indent=0
+let g:surround_no_mappings=1
+nmap ds <Plug>Dsurround
+nmap cs <Plug>Csurround
+nmap cS <Plug>CSurround
+nmap s  <Plug>Ysurround
+"nmap S  <Plug>YSurround
+nmap ss <Plug>Yssurround
+nmap sS <Plug>YSsurround
+xmap s  <Plug>VSurround
+xmap gs <Plug>VgSurround
+
+" vim-commentary
+" Use single line style for cpp
+autocmd FileType cpp setlocal commentstring=//%s
+autocmd FileType haxe setlocal commentstring=//%s
 
 " vim-fugitive: git wrapper
 
 " Optionally- YouCompleteMe for completion
+
+" vim-indentwise: indent based motions
+" (customised vim-indentwise to expose the following 2 functions)
+" map <c-j> <Plug>(IndentWiseNextLesserEqualIndent)
+" map <c-k> <Plug>(IndentWisePreviousLesserEqualIndent)
+" map <c-l> <Plug>(IndentWiseNextUnequalIndent)
+" map <c-h> <Plug>(IndentWisePreviousLesserIndent)
 
 " vim-easy-align:
 xmap <Enter> <Plug>(LiveEasyAlign)
