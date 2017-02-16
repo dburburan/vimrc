@@ -735,8 +735,6 @@ set selection=exclusive
 " Status Line
 set noruler
 set laststatus=2
-let s:red = "#dc322f"
-exe "hi User1 ctermfg=red gui=reverse guifg=" .s:red ." guibg=" .s:gui_base02
 set statusline=%1(%1*%M%*%)%<%f\ %h%r%=%-14.(%l,%c%V%)\ %P
 
 " Title Bar
