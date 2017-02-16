@@ -613,7 +613,7 @@ nnoremap <silent> <leader>bc :let g:bufferclip=bufnr('%')<cr>
 nnoremap <silent> <leader>bv :execute "b ".g:bufferclip<cr>
 
 " Execute line under cursor as Ex command
-nnoremap <leader>e :execute getline(".")<cr>
+nnoremap <leader><leader>x :execute getline(".")<cr>
 
 " Session shortcuts
 set ssop-=options
