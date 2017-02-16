@@ -254,15 +254,13 @@ endif
 
 set shortmess+=I
 set hidden "hidden buffers
-set virtualedit=onemore,block
-behave mswin
-set selection=exclusive
+set virtualedit+=block
 set whichwrap+=h,l,<,>,[,]
 set noswapfile
-set number
 set wildmode=longest,list,full
 set wildmenu
 set ruler
+set number
 
 "-----------------------------------------------------------------------------
 " Syntax Highlighting
