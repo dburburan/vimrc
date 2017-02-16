@@ -785,6 +785,9 @@ set autoread
 " Diff options
 set diffopt=filler,vertical
 
+" Disable auto-insert of comment lines
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
 " Text wrap
 set wrap
 set breakindent
