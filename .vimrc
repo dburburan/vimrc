@@ -587,6 +587,10 @@ cnoreabbrev t TabooRename
 "-----------------------------------------------------------------------------
 " Convenience Shortcuts
 "-----------------------------------------------------------------------------
+" Lambda symbol
+inoremap <leader><tab>l <c-k>l*
+" Lozenge symbol
+inoremap <leader><tab>o <c-k>LZ
 
 " Saving
 cnoreabbrev w up
