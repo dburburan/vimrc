@@ -769,6 +769,10 @@ inoremap <c-w> <c-g>u<c-w>
 " Make yank to end of line consistent with shift-C or shift-D
 NXOnoremap Y y$
 
+" Make cw and cW consistent with dw, etc
+onoremap w :execute 'normal! '.v:count1.'w'<CR>
+onoremap W :execute 'normal! '.v:count1.'W'<CR>
+
 " When starting linewise visual block mode, move cursor to start of line
 nnoremap V g^V
 
