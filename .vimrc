@@ -505,15 +505,38 @@ cnoreabbrev wjd Wj <\w
 let g:wordjump_regex='<\w'
 
 "-----------------------------------------------------------------------------
-" Windows keys
+" Insert mode
 "-----------------------------------------------------------------------------
 
-" Copy, cut, paste
+inoremap <c-j> <c-o>gj
+inoremap <c-k> <c-o>gk
+" inoremap <silent> <c-l> <c-o>:<c-u>call GotoPattern_4dFuJoHLIE('f', 'n')<CR>
+" inoremap <silent> <c-h> <c-o>:<c-u>call GotoPattern_4dFuJoHLIE('b', 'n')<CR>
+inoremap <c-l> <right>
+inoremap <c-h> <left>
+
+"-----------------------------------------------------------------------------
+" Windows Keys (Notepad mode!)
+"-----------------------------------------------------------------------------
+
+behave mswin
+
+" Select all. Lose increment number
+noremap <c-a> ggvG$
+inoremap <c-a> <c-home><c-s-end>
+snoremap <c-a> <c-home><c-s-end>
+
+" Copy, cut, paste. Lose decrement number and visual block mode, but provide alternative
 noremap <c-x> "+d
-noremap <c-c> "+y
+nnoremap <c-c> "+y
+xnoremap <c-c> "+ygv
+snoremap <c-c> <c-o>"+ygv<c-g>
+inoremap <c-c> <nop>
 noremap <c-v> "+gP
 cnoremap <c-v> <c-r>+
 inoremap <c-v> <c-g>u<c-o>"+gP
+" Paste mapped over insert raw character (c-v), use c-e instead
+inoremap <c-e> <c-v>
 
 " Undo and redo. We lose c-y for scrolling, but I never really used it
 noremap <c-z> u
