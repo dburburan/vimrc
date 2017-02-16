@@ -665,6 +665,7 @@ cnoreabbrev slr call LoadSessionRecent()
 
 " Diff
 NXOnoremap <leader>d :call ToggleDiff()<cr>
+NXOnoremap <leader>do :diffoff!<cr>
 function! ToggleDiff()
   if &diff
     diffoff
@@ -676,7 +677,11 @@ nnoremap <leader>g :diffget<cr>
 nnoremap <leader>p :diffput<cr>
 xnoremap <leader>g :'<,'>diffget<cr>
 xnoremap <leader>p :'<,'>diffput<cr>
-NXOnoremap <leader>u :diffupdate<cr>
+" 'Refresh' diff
+NXOnoremap <leader>r :diffupdate<cr>
+
+"Using plugin vim-diffa to process git diff output
+let g:diffa#unified#arguments = ['diff', '--no-index', '--patience', '--no-color', '--no-ext-diff', '--unified=0']
 
 "-----------------------------------------------------------------------------
 " Misc Config
