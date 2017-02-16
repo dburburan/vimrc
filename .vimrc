@@ -548,7 +548,10 @@ inoremap <c-y> <c-o><c-r>
 " Provide alternative way to access visual block mode
 xnoremap v <c-v>
 
-" Tabs
+" Indent with tab key
+snoremap <tab> <c-o>>gv<c-g>
+snoremap <s-tab> <c-o><gv<c-g>
+
 "-----------------------------------------------------------------------------
 " Tab Pages
 "-----------------------------------------------------------------------------
