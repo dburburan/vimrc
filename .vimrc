@@ -9,6 +9,13 @@ set fileencoding=utf-8
 set fileformats=unix,dos
 setglobal nobomb
 
+"-----------------------------------------------------------------------------
+" Mapping setup
+"-----------------------------------------------------------------------------
+
+let mapleader = "'"
+let s:ctrl_mapleader = "<c-'>"
+
 " Useful map mode (normal, visual, operator-pending) same as noremap but without select mode
 " Makes overwriting by typing work when selecting (shift+move in insert mode)
 command! -nargs=* -complete=mapping NXOnoremap nnoremap <args>|xnoremap <args>|onoremap <args>
@@ -375,11 +382,10 @@ cnoreabbrev colln call ColorschemeLightNormal()
 cnoreabbrev collc call ColorschemeLightContrast()
 
 "-----------------------------------------------------------------------------
-" Modifying Default Vim Keys
+" Modifying Default Vim Behaviour
 "-----------------------------------------------------------------------------
 
-let mapleader = "\\"
-set timeoutlen=300
+set timeoutlen=1000
 
 " Faster Ex mode access
 NXOnoremap ; :
