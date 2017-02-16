@@ -211,7 +211,9 @@ nnoremap <silent> <c-space> :Unite                   tab buffer                 
 " Language Specific
 " -----------------
 " Coffeescript syntax highlighting
+
 " Vaxe for haxe highlighting
+let g:vaxe_completion_require_autowrite = 0
 
 " Racket
 let g:paredit_mode=0
