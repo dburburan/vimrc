@@ -719,6 +719,12 @@ endfunction
 command! -nargs=+ -complete=command Ex2Buf call Ex2Buf(<q-args>)
 cnoreabbrev > Ex2Buf
 
+python << EOF
+def evalVimLine(line):
+  return str(eval(line))
+EOF
+xnoremap <c-cr> :pydo return evalVimLine(line)<cr>
+
 "-----------------------------------------------------------------------------
 " Misc Config
 "-----------------------------------------------------------------------------
