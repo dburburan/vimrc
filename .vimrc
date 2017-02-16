@@ -42,15 +42,24 @@ hi clear ObliqueCurrentMatch
 " vim-multiple-cursors
 " It doesn't work with exclusive selection so temporarily set inclusive selection
 " Also interferes with our trick to move cursor coming out of insert mode so turn that off too
+let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<C-c>'
 function! Multiple_cursors_before()
   set selection=inclusive
-  iunmap <esc>
-  inoremap <silent> <s-cr> <esc>
+  inoremap <esc> <esc>
+  inoremap <c-cr> <esc>
+  noremap u <nop>
+  noremap <c-r> <nop>
 endfunction
 function! Multiple_cursors_after()
   set selection=exclusive
-  inoremap <silent> <esc> <esc>`^
-  inoremap <silent> <s-cr> <esc>`^
+  inoremap <esc> <esc>`^
+  inoremap <c-cr> <esc>`^
+  unmap u
+  unmap <c-r>
 endfunction
 
 " Unite
