@@ -389,21 +389,41 @@ set timeoutlen=1000
 
 " Faster Ex mode access
 NXOnoremap ; :
-" As a result, provide new mappings for search by character
-NXOnoremap : ,
-NXOnoremap " ;
+" As a result, provide new mappings for search by character (now search back/forwards by pressing shift+: / shift+" ~ these are positionally related)
+" (not in use - see mappings in EasyMotion section)
+" NXOnoremap : ,
+" NXOnoremap " ;
 " And as a result of that, provide mappings for using registers, which is also more convenient
-NXOnoremap ' "
-" We changed the ability to jump to mark line (') but we can use jump to mark exactly (`) instead or the following: (,)
-NXOnoremap , '
+NXOnoremap \ "
+" We use ' as our <leader>, so clear it from any other purpose
+NXOnoremap ' <esc>
+" We've clobbered the ability to jump to mark-line ('), now we're gonna make it (~) and jump to mark-exact will become (,)
+NXOnoremap ~ '
+NXOnoremap , `
+" Now that we've clobbered change case (~) it will become (`)
+NXOnoremap ` ~
+
+" Adjust everything to maintain the concept of placing the cursor after an edit, instead of on top of the edit
+" And that an edit is by default an insert (before current cursor location), not an add
+set virtualedit+=onemore
+NXOnoremap p gP
+NXOnoremap P gp
+NXOnoremap o O
+NXOnoremap O o
+
+" Don't move the cursor on visual mode yank
+xnoremap y ygv<esc>
 
 " Come out of insert mode assuming it was insert mode not add mode
-" Also map shift/ctrl+enter to esc
-inoremap <silent> <esc> <esc>`^
-inoremap <silent> <s-cr> <esc>`^
+" Also map ctrl+enter to esc
+inoremap <esc> <esc>`^
+" inoremap <c-cr> <esc>`^
 
-" Shift+enter easier to press than escape
-noremap <s-cr> <esc>
+" Ctrl+enter easier to press than escape
+" noremap <c-cr> <esc>
+
+" Make enter an alternative to line object. Pressing d<cr> or y<cr> for example much faster than dd or yy
+onoremap <cr> _
 
 " Add an undo point for inserting newlines
 inoremap <cr> <c-g>u<cr>
@@ -425,6 +445,10 @@ noremap <c-e> <c-u>
 noremap <c-y> <c-e>
 noremap <c-u> <c-y>
 
+" Scroll from home row
+NXOnoremap <c-k> <c-y>
+NXOnoremap <c-j> <c-e>
+
 " Make arrow keys useful for scrolling document when you're not really editing
 NXOnoremap <up> <c-y>k
 NXOnoremap <down> <c-e>j
@@ -435,6 +459,19 @@ NXOnoremap L g$
 " If we're in the middle of a motion use the whole line
 onoremap H ^
 onoremap L $
+
+" Jump around surroundings from home row
+NXOnoremap S %
+
+" Map K to split line before the current word
+" Should be more or less the inverse of J, we lose help-under-cursor which isn't useful anyway
+nnoremap K gea<cr><esc>`^
+
+" remap gn and gN because these are essentially text objects
+onoremap in gn
+onoremap iN gN
+xnoremap in <esc>gn
+xnoremap iN <esc>gN
 
 "-----------------------------------------------------------------------------
 " Windows keys
