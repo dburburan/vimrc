@@ -609,8 +609,8 @@ cnoreabbrev fffix call RepairFileNewlines()
 cnoreabbrev cdc cd %:p:h
 
 " Buffer copy and paste
-nnoremap <silent> <leader>bc :let bufferclip=bufnr('%')<cr>
-nnoremap <silent> <leader>bv :execute "b ".bufferclip<cr>
+nnoremap <silent> <leader>bc :let g:bufferclip=bufnr('%')<cr>
+nnoremap <silent> <leader>bv :execute "b ".g:bufferclip<cr>
 
 " Execute line under cursor as Ex command
 nnoremap <leader>e :execute getline(".")<cr>
